@@ -112,13 +112,16 @@ function Notes() {
       </div>
       <div className="row my-3">
         <h2>Your Notes</h2>
-        <div className="col-sm-4">
+        
           {notes.map((note) => {
             return (
-              <NoteItem key={note._id} updateNote={updateNote} note={note} />
+              <div className="col-sm-4">
+                {" "}
+                <NoteItem key={note._id} updateNote={updateNote} note={note} />
+              </div>
             );
           })}
-        </div>
+        
       </div>
     </>
   );

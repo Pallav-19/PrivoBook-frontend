@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
 import "./NoteItem.css";
 import NoteContext from "./contexts/Notes/noteContext";
 function NoteItem(props) {
@@ -15,7 +16,7 @@ function NoteItem(props) {
             <i
               className="fa-solid fa-trash mx-2"
               onClick={() => {
-                deleteNote(props.key);
+                deleteNote(note._id);
               }}
             >
               Delete

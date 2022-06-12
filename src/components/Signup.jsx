@@ -1,35 +1,92 @@
-import React from "react";
-import "./Home.css"
-const signup = () => {
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
+import "./Home.css";
+import { useNavigate } from "react-router-dom";
+const Signup = (props) => {
+  const navigate = useNavigate();
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    name: "",
+  });
+  const onChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
   return (
     <div className="signup">
-      <form>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">
-            Email address
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const response = await fetch(
+            "http://localhost:8080/api/auth/signup",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                name: input.name,
+                email: input.email,
+                password: input.password,
+              }),
+            }
+          );
+          const json = await response.json();
+          if (json.success) {
+            navigate("/login");
+            props.showAlert("Successfully Signed Up", "success");
+          } else {
+            props.showAlert("Bad credentials", "danger");
+          }
+        }}
+      >
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
           </label>
           <input
-            type="email"
-            class="form-control"
-            id="exampleInputEmail1"
+            onChange={onChange}
+            name="name"
+            required
+            type="text"
+            className="form-control"
+            id="name"
             aria-describedby="emailHelp"
-          />
-          <div id="emailHelp" class="form-text">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            class="form-control"
-            id="exampleInputPassword1"
           />
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Email address
+          </label>
+          <input
+            onChange={onChange}
+            name="email"
+            required
+            type="email"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+          />
+          <div id="emailHelp" className="form-text">
+            We'll never share your email with anyone else.
+          </div>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputPassword1" className="form-label">
+            Password
+          </label>
+          <input
+            onChange={onChange}
+            required
+            name="password"
+            type="password"
+            className="form-control"
+            id="exampleInputPassword1"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
           Sign Up
         </button>
       </form>
@@ -37,4 +94,4 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default Signup;

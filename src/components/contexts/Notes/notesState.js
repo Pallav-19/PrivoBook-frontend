@@ -3,60 +3,69 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import NoteContext from "./noteContext";
+import { useNavigate } from "react-router-dom";
 const NoteState = (props) => {
+  const navigate = useNavigate();
   const host = "http://localhost:8080/";
-  const [notes, setNotes] = useState([{
-    _id:1,
-    title:"mytitle",
-    description:"description"
-  }]);
+  const [notes, setNotes] = useState([{}]);
 
   //getAllNotes
   const getNotes = async () => {
-    const response = await fetch(
-      `http://localhost:8080/api/note/fetchAllNotes`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+    if (localStorage.getItem("token")) {
+      const response = await fetch(
+        `http://localhost:8080/api/note/fetchAllNotes`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      const json = await response.json();
+
+      setNotes(json.payload);
+      if (json.success) {
+        props.showAlert(json.message, "success");
+      } else {
+        props.showAlert(json.message, "danger");
       }
-    );
-    const json = await response.json();
-    // console.log(json.payload)
-    setNotes(json.payload);
+    }
   };
   // add a note
   const addNote = async (title, description, tag) => {
-    const note = {
-      _id: 1,
-      title: title,
-      description: description,
-      tag: tag,
-    };
-
-    const response = await fetch(`${host}api/notes/addNotes`, {
+    const response = await fetch(`${host}api/note/addNotes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    // setNotes(notes.concat(note));
+    const json = response.json();
+    if (json.success) {
+      props.showAlert(json.message, "success");
+    } else {
+      props.showAlert(json.message, "danger");
+    }
+    navigate("/");
   };
   // delete a note
   const deleteNote = async (id) => {
-    const newNotes = notes.filter((note) => {
-      return note._id !== id;
-    });
-    const response = await fetch(`${host}api/notes/updateNote/${id}`, {
+    const response = await fetch(`${host}api/note/deleteNote/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        authorization: localStorage.getItem("token"),
       },
     });
-    setNotes(notes.concat(newNotes));
+    const json = response.json();
+    if (json.success) {
+      props.showAlert(json.message, "success");
+    } else {
+      props.showAlert(json.message, "danger");
+    }
   };
   // edit note
   const editNote = async (id, title, description, tag) => {
@@ -67,17 +76,25 @@ const NoteState = (props) => {
         note.tag = tag;
       }
     });
-    const response = await fetch(`${host}api/notes/updateNote/${id}`, {
+    const response = await fetch(`${host}api/note/updateNote/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
+    const json = response.json();
+    if (json.success) {
+      props.showAlert(json.message, "success");
+    } else {
+      props.showAlert(json.message, "danger");
+    }
   };
+
   return (
     <NoteContext.Provider
-      value={{ notes:notes, addNote, deleteNote, editNote, getNotes }}
+      value={{ notes: notes, addNote, deleteNote, editNote, getNotes }}
     >
       {props.children}
     </NoteContext.Provider>

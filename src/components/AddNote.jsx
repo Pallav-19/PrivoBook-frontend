@@ -1,14 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import NoteContext from "./contexts/Notes/noteContext";
-
+import { Link,Navigate } from "react-router-dom";
 const AddNote = () => {
   const context = useContext(NoteContext);
   const { addNote } = context;
-  const [note, setnote] = useState({ title: "", description: "" ,tag:""});
+  const [note, setnote] = useState({ title: "", description: "", tag: "" });
   const handleclick = (e) => {
-    e.preventDefault();
-    addNote(note.title,note.description,note.tag);
+    // e.preventDefault();
+    addNote(note.title, note.description, note.tag);
+    // return <Navigate to="/" />;
   };
   const changehandler = (e) => {
     setnote({ ...note, [e.target.name]: e.target.value });
@@ -57,10 +58,15 @@ const AddNote = () => {
             name="tag"
           />
         </div>
-
-        <button onClick={handleclick} type="submit" className="btn btn-primary">
-          Add Note
-        </button>
+        <Link to="/">
+          <button
+            onClick={handleclick}
+            type="submit"
+            className="btn btn-primary"
+          >
+            Add Note
+          </button>
+        </Link>
       </form>
     </div>
   );

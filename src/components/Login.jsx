@@ -1,35 +1,75 @@
-import React from "react";
-import "./Home.css"
-const login = () => {
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
+import {  useNavigate } from "react-router-dom";
+import "./Home.css";
+const Login = (props) => {
+  const navigate = useNavigate();
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
   return (
     <div className="login">
-      <form>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">
+      <form
+        onSubmit={async (e) => {
+          
+          const response = await fetch("http://localhost:8080/api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              email: input.email,
+              password: input.password,
+            }),
+          });
+          const json = await response.json();
+          const token = json.token;
+          if (token && json.success) {
+            localStorage.setItem("token", token);
+            navigate("/");
+            props.showAlert(json.message, "success");
+          } else {
+            props.showAlert(json.message, "danger");
+          }
+        }}
+      >
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
             Email address
           </label>
           <input
+            onChange={onChange}
+            name="email"
+            required
             type="email"
-            class="form-control"
+            className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
           />
-          <div id="emailHelp" class="form-text">
+          <div id="emailHelp" className="form-text">
             We'll never share your email with anyone else.
           </div>
         </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputPassword1" className="form-label">
             Password
           </label>
           <input
+            onChange={onChange}
+            name="password"
+            required
             type="password"
-            class="form-control"
+            className="form-control"
             id="exampleInputPassword1"
           />
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Login
         </button>
       </form>
@@ -37,4 +77,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

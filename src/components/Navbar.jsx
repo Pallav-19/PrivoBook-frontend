@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 function Navbar() {
   let location = useLocation();
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-success">
@@ -44,10 +42,37 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
-            <div class="d-flex">
-              <Link to="/login" role="button" class="btn mx-2 btn-warning">Login</Link>
-              <Link to="/signup" role="button" class="btn mx-2 btn-warning">Sign up</Link>
-            </div>
+            {!localStorage.getItem("token") ? (
+              <div className="d-flex">
+                <Link
+                  to="/login"
+                  role="button"
+                  className="btn mx-2 btn-warning"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  role="button"
+                  className="btn mx-2 btn-warning"
+                >
+                  Sign up
+                </Link>
+              </div>
+            ) : (
+              <div className="d-flex">
+                <Link
+                  to="/"
+                  role="button"
+                  className="btn mx-2 btn-warning"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                  }}
+                >
+                  Log Out
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

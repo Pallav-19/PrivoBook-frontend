@@ -1,9 +1,9 @@
 import React from "react";
-
+import "./Alert.css";
 function Alert(props) {
   return (
-    <div class="alert alert-dark" role="alert">
-      {props.message}
+    <div className={`alert alert-${props.alert?.type}`} role="alert">
+      {props.alert?.message}
     </div>
   );
 }
