@@ -5,7 +5,7 @@ import NoteContext from "./contexts/Notes/noteContext";
 const AddNote = () => {
   const context = useContext(NoteContext);
   const { addNote } = context;
-  const [note, setnote] = useState({ title: "", description: "" ,tag:"default"});
+  const [note, setnote] = useState({ title: "", description: "" ,tag:""});
   const handleclick = (e) => {
     e.preventDefault();
     addNote(note.title,note.description,note.tag);
@@ -42,6 +42,19 @@ const AddNote = () => {
             id="description"
             onChange={changehandler}
             name="description"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">
+            Tag
+          </label>
+          <input
+            required
+            type="text"
+            className="form-control"
+            id="tag"
+            onChange={changehandler}
+            name="tag"
           />
         </div>
 

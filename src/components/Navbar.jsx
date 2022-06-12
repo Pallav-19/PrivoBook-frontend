@@ -35,13 +35,19 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <Link
-                  className={`nav-link ${location === "/about" ? "active" : " "} `}
+                  className={`nav-link ${
+                    location === "/about" ? "active" : " "
+                  } `}
                   to="/about"
                 >
                   About
                 </Link>
               </li>
             </ul>
+            <div class="d-flex">
+              <Link to="/login" role="button" class="btn mx-2 btn-warning">Login</Link>
+              <Link to="/signup" role="button" class="btn mx-2 btn-warning">Sign up</Link>
+            </div>
           </div>
         </div>
       </nav>
