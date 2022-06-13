@@ -23,9 +23,10 @@ const NoteState = (props) => {
       });
       const json = await response.json();
 
-      setNotes(json.payload);
-      if (!json.success) {
-        props.showALert(json.message, "danger");
+      setNotes(await json.payload);
+      let success = await json.success;
+      if (!success) {
+        props.showALert(await json.message, "danger");
       } else {
         props.showALert(null, null);
       }
@@ -42,11 +43,12 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const json = await response.json();
-    if (json.success) {
-      props.showALert(json.message, "success");
+    let success = await json.success;
+    if (success) {
+      props.showALert(await json.message, "success");
       getNotes();
     } else {
-      props.showALert(json.message, "danger");
+      props.showALert(await json.message, "danger");
     }
     navigate("/");
   };
@@ -60,11 +62,11 @@ const NoteState = (props) => {
       },
     });
     const json = await response.json();
-    if (json.success) {
-      props.showALert(json.message, "success");
+    if (await json.success) {
+      props.showALert(await json.message, "success");
       getNotes();
     } else {
-      props.showALert(json.message, "danger");
+      props.showALert(await json.message, "danger");
       getNotes();
     }
   };
@@ -86,11 +88,11 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const json = await response.json();
-    if (json.success) {
-      props.showALert(json.message, "success");
+    if (await json.success) {
+      props.showALert(await json.message, "success");
       getNotes();
     } else {
-      props.showALert(json.message, "danger");
+      props.showALert(await json.message, "danger");
       getNotes();
     }
   };
