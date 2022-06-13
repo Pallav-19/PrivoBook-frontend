@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import NoteContext from "./contexts/Notes/noteContext";
-import { Link,Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 const AddNote = () => {
   const context = useContext(NoteContext);
   const { addNote } = context;
@@ -23,6 +23,7 @@ const AddNote = () => {
             TITLE*
           </label>
           <input
+          minLength={3}
             required
             type="text"
             className="form-control"
@@ -37,6 +38,7 @@ const AddNote = () => {
             DESCRIPTION*
           </label>
           <input
+            minLength={5}
             required
             type="text"
             className="form-control"

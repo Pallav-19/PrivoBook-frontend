@@ -6,30 +6,28 @@ import NoteContext from "./noteContext";
 import { useNavigate } from "react-router-dom";
 const NoteState = (props) => {
   const navigate = useNavigate();
-  const host = "http://localhost:8080/";
+  const host =
+    "http://privobook-env.eba-imi9mm39.ap-south-1.elasticbeanstalk.com/";
   const [notes, setNotes] = useState([{}]);
 
   //getAllNotes
   const getNotes = async () => {
     if (localStorage.getItem("token")) {
-      const response = await fetch(
-        `http://localhost:8080/api/note/fetchAllNotes`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await fetch(`${host}api/note/fetchAllNotes`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          authorization: localStorage.getItem("token"),
+        },
+      });
       const json = await response.json();
 
       setNotes(json.payload);
-      if (json.success) {
-        props.showAlert(json.message, "success");
+      if (!json.success) {
+        props.showALert(json.message, "danger");
       } else {
-        props.showAlert(json.message, "danger");
+        props.showALert(null, null);
       }
     }
   };
@@ -43,11 +41,12 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    const json = response.json();
+    const json = await response.json();
     if (json.success) {
-      props.showAlert(json.message, "success");
+      props.showALert(json.message, "success");
+      getNotes();
     } else {
-      props.showAlert(json.message, "danger");
+      props.showALert(json.message, "danger");
     }
     navigate("/");
   };
@@ -60,11 +59,13 @@ const NoteState = (props) => {
         authorization: localStorage.getItem("token"),
       },
     });
-    const json = response.json();
+    const json = await response.json();
     if (json.success) {
-      props.showAlert(json.message, "success");
+      props.showALert(json.message, "success");
+      getNotes();
     } else {
-      props.showAlert(json.message, "danger");
+      props.showALert(json.message, "danger");
+      getNotes();
     }
   };
   // edit note
@@ -84,11 +85,13 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    const json = response.json();
+    const json = await response.json();
     if (json.success) {
-      props.showAlert(json.message, "success");
+      props.showALert(json.message, "success");
+      getNotes();
     } else {
-      props.showAlert(json.message, "danger");
+      props.showALert(json.message, "danger");
+      getNotes();
     }
   };
 

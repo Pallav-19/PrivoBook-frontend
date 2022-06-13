@@ -18,7 +18,7 @@ const Signup = (props) => {
         onSubmit={async (e) => {
           e.preventDefault();
           const response = await fetch(
-            "http://localhost:8080/api/auth/signup",
+            "http://privobook-env.eba-imi9mm39.ap-south-1.elasticbeanstalk.com/api/auth/signup",
             {
               method: "POST",
               headers: {
@@ -35,9 +35,9 @@ const Signup = (props) => {
           const json = await response.json();
           if (json.success) {
             navigate("/login");
-            props.showAlert("Successfully Signed Up", "success");
+            props.showALert("Successfully Signed Up", "success");
           } else {
-            props.showAlert("Bad credentials", "danger");
+            props.showALert("Bad credentials", "danger");
           }
         }}
       >

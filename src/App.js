@@ -18,7 +18,7 @@ function App() {
     });
     setTimeout(() => {
       setAlert(null);
-    }, 1500);
+    }, 2000);
   };
   return (
     <div className="App">
@@ -29,17 +29,7 @@ function App() {
             <Alert alert={alert} />
             <div className="container">
               <Routes>
-                <Route
-                  exact
-                  path="/"
-                  element={
-                    localStorage.getItem("token") ? (
-                      <Home showALert={showALert} />
-                    ) : (
-                      <Login />
-                    )
-                  }
-                ></Route>
+                <Route exact path="/" element={<Home />}></Route>
                 <Route exact path="/about" element={<About />}></Route>
                 <Route
                   exact

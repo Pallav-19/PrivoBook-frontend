@@ -1,14 +1,16 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 function Navbar() {
   let location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-success">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            iNotebook
+            PrivoBook
           </Link>
           <button
             className="navbar-toggler"
@@ -67,6 +69,7 @@ function Navbar() {
                   className="btn mx-2 btn-warning"
                   onClick={() => {
                     localStorage.removeItem("token");
+                    window.location.reload();
                   }}
                 >
                   Log Out

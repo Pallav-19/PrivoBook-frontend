@@ -9,18 +9,29 @@ function Notes() {
   const context = useContext(NoteContext);
   const { notes, getNotes, editNote } = context;
 
-  const [note, setnote] = useState({ title: "", description: "", tag: "" });
+  const [note, setnote] = useState({
+    eid: "",
+    etitle: "",
+    edescription: "",
+    etag: "",
+  });
 
   const changehandler = (e) => {
     setnote({ ...note, [e.target.name]: e.target.value });
   };
   const handleclick = (e) => {
     e.preventDefault();
-    editNote(note.title, note.description, note.tag);
+    editNote(note.eid, note.etitle, note.edescription, note.etag);
   };
   const ref = useRef(null);
   const updateNote = (note) => {
-    ref.toggle();
+    ref.current.click();
+    setnote({
+      eid: note._id,
+      etitle: note.title,
+      edescription: note.description,
+      etag: note.tag,
+    });
   };
   useEffect(() => {
     return () => {
@@ -30,7 +41,16 @@ function Notes() {
   return (
     <>
       <AddNote />
-      <div className="modal" tabIndex="-1" ref={ref}>
+      <button
+        hidden
+        ref={ref}
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      ></button>
+
+      <div className="modal fade" id="exampleModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -44,12 +64,12 @@ function Notes() {
             </div>
             <div className="modal-body">
               <form>
-                <h2>Add a note</h2>
                 <div className="mb-3">
-                  <label htmlFor="title" className="form-label">
+                  <label htmlFor="etitle" className="form-label">
                     TITLE*
                   </label>
                   <input
+                    value={note.etitle}
                     required
                     type="text"
                     className="form-control"
@@ -60,10 +80,11 @@ function Notes() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="description" className="form-label">
+                  <label htmlFor="edescription" className="form-label">
                     DESCRIPTION*
                   </label>
                   <input
+                    value={note.edescription}
                     required
                     type="text"
                     className="form-control"
@@ -73,10 +94,11 @@ function Notes() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="description" className="form-label">
+                  <label htmlFor="etag" className="form-label">
                     Tag
                   </label>
                   <input
+                    value={note.etag}
                     required
                     type="text"
                     className="form-control"
@@ -85,14 +107,6 @@ function Notes() {
                     name="etag"
                   />
                 </div>
-
-                <button
-                  onClick={handleclick}
-                  type="submit"
-                  className="btn btn-primary"
-                >
-                  Add Note
-                </button>
               </form>
             </div>
             <div className="modal-footer">
@@ -103,7 +117,12 @@ function Notes() {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                onClick={handleclick}
+                type="button"
+                data-bs-dismiss="modal"
+                className="btn btn-primary"
+              >
                 Save changes
               </button>
             </div>
@@ -112,16 +131,14 @@ function Notes() {
       </div>
       <div className="row my-3">
         <h2>Your Notes</h2>
-        
-          {notes.map((note) => {
-            return (
-              <div className="col-sm-4">
-                {" "}
-                <NoteItem key={note._id} updateNote={updateNote} note={note} />
-              </div>
-            );
-          })}
-        
+
+        {notes.map((note) => {
+          return (
+            <div key={note._id} className="col-sm-4">
+              <NoteItem key={note._id} updateNote={updateNote} note={note} />
+            </div>
+          );
+        })}
       </div>
     </>
   );

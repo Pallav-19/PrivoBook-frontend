@@ -1,10 +1,10 @@
 import React from "react";
 import Notes from "./Notes";
-
-function Home(props) {
+import Login from "./Login";
+function Home() {
   return (
     <div className="container my-3">
-      <Notes showAlert={props.showAlert} />
+      {localStorage.getItem("token") ? <Notes /> : <Login />}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Home.css";
 const Login = (props) => {
   const navigate = useNavigate();
@@ -15,26 +15,28 @@ const Login = (props) => {
     <div className="login">
       <form
         onSubmit={async (e) => {
-          
-          const response = await fetch("http://localhost:8080/api/auth/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify({
-              email: input.email,
-              password: input.password,
-            }),
-          });
+          const response = await fetch(
+            "http://privobook-env.eba-imi9mm39.ap-south-1.elasticbeanstalk.com/auth/login",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                email: input.email,
+                password: input.password,
+              }),
+            }
+          );
           const json = await response.json();
           const token = json.token;
           if (token && json.success) {
             localStorage.setItem("token", token);
             navigate("/");
-            props.showAlert(json.message, "success");
+            props.showALert(json.message, "success");
           } else {
-            props.showAlert(json.message, "danger");
+            props.showALert(json.message, "danger");
           }
         }}
       >
