@@ -35,9 +35,9 @@ const Signup = (props) => {
           const json = await response.json();
           if (await json.success) {
             navigate("/login");
-            props.showALert("Successfully Signed Up", "success");
+            props.showALert(await json.message, "success");
           } else {
-            props.showALert("Bad credentials", "danger");
+            props.showALert(await json.message, "danger");
           }
         }}
       >

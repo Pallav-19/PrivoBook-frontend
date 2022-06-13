@@ -34,9 +34,9 @@ const Login = (props) => {
           if (token && await  json.success) {
             localStorage.setItem("token", token);
             navigate("/");
-            props.showALert(json.message, "success");
+            props.showALert(await json.message, "success");
           } else {
-            props.showALert(json.message, "danger");
+            props.showALert(await json.message, "danger");
           }
         }}
       >
