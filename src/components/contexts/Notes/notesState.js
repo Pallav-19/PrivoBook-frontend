@@ -6,8 +6,7 @@ import NoteContext from "./noteContext";
 import { useNavigate } from "react-router-dom";
 const NoteState = (props) => {
   const navigate = useNavigate();
-  const host =
-    "http://privobook-env.eba-imi9mm39.ap-south-1.elasticbeanstalk.com/";
+  const host = "https://privobook.herokuapp.com/";
   const [notes, setNotes] = useState([{}]);
 
   //getAllNotes

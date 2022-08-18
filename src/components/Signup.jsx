@@ -18,7 +18,7 @@ const Signup = (props) => {
         onSubmit={async (e) => {
           e.preventDefault();
           const response = await fetch(
-            "http://privobook-env.eba-imi9mm39.ap-south-1.elasticbeanstalk.com/api/auth/signup",
+            "https://privobook.herokuapp.com/api/auth/signup",
             {
               method: "POST",
               headers: {

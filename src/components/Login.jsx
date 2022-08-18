@@ -16,7 +16,7 @@ const Login = (props) => {
       <form
         onSubmit={async (e) => {
           const response = await fetch(
-            "http://privobook-env.eba-imi9mm39.ap-south-1.elasticbeanstalk.com/api/auth/login",
+            "https://privobook.herokuapp.com/api/auth/login",
             {
               method: "POST",
               headers: {
